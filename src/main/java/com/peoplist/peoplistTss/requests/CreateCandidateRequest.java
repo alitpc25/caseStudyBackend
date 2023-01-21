@@ -5,14 +5,14 @@ public class CreateCandidateRequest {
 	private String surname;
 	private String phone;
 	private String mail;
-	private String candidateStatus;
+	private String status;
 	
-	public CreateCandidateRequest(String name, String surname, String phone, String mail, String candidateStatus) {
+	public CreateCandidateRequest(String name, String surname, String phone, String mail, String status) {
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
 		this.mail = mail;
-		this.candidateStatus = candidateStatus;
+		this.status = status;
 	}
 	public String getName() {
 		return name;
@@ -38,11 +38,11 @@ public class CreateCandidateRequest {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public String getCandidateStatus() {
-		return candidateStatus;
+	public String getStatus() {
+		return status;
 	}
-	public void setCandidateStatus(String candidateStatus) {
-		this.candidateStatus = candidateStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

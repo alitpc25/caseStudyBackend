@@ -1,11 +1,10 @@
 package com.peoplist.peoplistTss.service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.peoplist.peoplistTss.dto.InteractionDto;
@@ -32,13 +31,24 @@ public class InteractionService {
 		this.interactionDtoConverter = interactionDtoConverter;
 	}
 
-	public List<InteractionDto> getAllInteractionsByCandidateId(String candidateId, int page, int size) {
-		Page<Interaction> interactions = interactionRepository.findAllByCandidateId(UUID.fromString(candidateId), PageRequest.of(page, size));
+	public Page<InteractionDto> getAllInteractionsByCandidateId(String candidateId, int page, int size) {
+		Page<Interaction> interactions = interactionRepository.findAllByCandidateId(UUID.fromString(candidateId), PageRequest.of(page-1, size));
 		String candidateName = extractCandidateName(candidateId);
 		if(interactions.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no interactions with candidate " + candidateName + ".");
 		}
-		return interactions.getContent().stream().map(interactionDtoConverter::convertToDto).collect(Collectors.toList());
+		return interactions.map(interactionDtoConverter::convertToDto);
+	}
+	
+	public Page<InteractionDto> getAllInteractionsByCandidateIdSorted(String candidateId, Integer page, Integer size, String sortedBy,
+			String sortOrder) {
+		Page<Interaction> interactions = interactionRepository.findAllByCandidateId(UUID.fromString(candidateId), 
+				PageRequest.of(page-1, size, Sort.by(Sort.Direction.fromString(sortOrder) ,sortedBy)));
+		String candidateName = extractCandidateName(candidateId);
+		if(interactions.isEmpty()) {
+			throw new CandidateNotFoundException("There exists no interactions with candidate " + candidateName + ".");
+		}
+		return interactions.map(interactionDtoConverter::convertToDto);
 	}
 	
 	private String extractCandidateName(String candidateId) {

@@ -1,7 +1,6 @@
 package com.peoplist.peoplistTss.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +27,27 @@ public class CandidateController {
 		this.candidateService = candidateService;
 	}
 	
-	@GetMapping("")
-	public ResponseEntity<List<CandidateDto>> getAllCandidates(@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "10") int size) {
+	@GetMapping(value="", params={"page", "size"})
+	public ResponseEntity<Page<CandidateDto>> getAllCandidates(@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size) {
 		return ResponseEntity.ok(candidateService.getAllCandidates(page, size));
+	}
+	
+	@GetMapping(value="", params={"page", "size", "sortedBy", "sortOrder"})
+	public ResponseEntity<Page<CandidateDto>> getAllCandidatesSorted(@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sortedBy", defaultValue = "name") String sortedBy,
+			@RequestParam(value = "sortOrder", defaultValue = "DESC") String sortOrder) {
+		return ResponseEntity.ok(candidateService.getAllCandidatesSorted(page, size, sortedBy, sortOrder));
+	}
+	
+	@GetMapping(value="", params={"page", "size", "name", "surname"})
+	public ResponseEntity<Page<CandidateDto>> getAllCandidatesSearchByNameAndOrSurname(
+			@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "name", defaultValue = "") String name,
+			@RequestParam(value = "surname", defaultValue = "") String surname) {
+		return ResponseEntity.ok(candidateService.getAllCandidatesSearchByNameAndOrSurname(page, size, name, surname));
 	}
 	
 	@GetMapping("/{id}")

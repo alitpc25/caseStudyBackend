@@ -3,11 +3,11 @@ package com.peoplist.peoplistTss.requests;
 public class UpdateCandidateRequest {
 	private String phone;
 	private String mail;
-	private String candidateStatus;
-	public UpdateCandidateRequest(String phone, String mail, String candidateStatus) {
+	private String status;
+	public UpdateCandidateRequest(String phone, String mail, String status) {
 		this.phone = phone;
 		this.mail = mail;
-		this.candidateStatus = candidateStatus;
+		this.status = status;
 	}
 	public String getPhone() {
 		return phone;
@@ -21,11 +21,11 @@ public class UpdateCandidateRequest {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public String getCandidateStatus() {
-		return candidateStatus;
+	public String getStatus() {
+		return status;
 	}
-	public void setCandidateStatus(String candidateStatus) {
-		this.candidateStatus = candidateStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

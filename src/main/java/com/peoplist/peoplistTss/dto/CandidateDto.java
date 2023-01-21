@@ -1,27 +1,22 @@
 package com.peoplist.peoplistTss.dto;
 
-import java.util.Set;
-
 public class CandidateDto {
 	private String id;
 	private String name;
 	private String surname;
 	private String phone;
 	private String mail;
-	private Set<InteractionDto> interactions;
-	private String candidateStatus;
+	private String status;
 	
 	public CandidateDto() {};
 	
-	public CandidateDto(String id, String name, String surname, String phone, String mail,
-			Set<InteractionDto> interactions, String candidateStatus) {
+	public CandidateDto(String id, String name, String surname, String phone, String mail, String status) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
 		this.mail = mail;
-		this.interactions = interactions;
-		this.candidateStatus = candidateStatus;
+		this.status = status;
 	}
 	public String getId() {
 		return id;
@@ -53,17 +48,11 @@ public class CandidateDto {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public Set<InteractionDto> getInteractions() {
-		return interactions;
+	public String getStatus() {
+		return status;
 	}
-	public void setInteractions(Set<InteractionDto> interactions) {
-		this.interactions = interactions;
-	}
-	public String getCandidateStatus() {
-		return candidateStatus;
-	}
-	public void setCandidateStatus(String candidateStatus) {
-		this.candidateStatus = candidateStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

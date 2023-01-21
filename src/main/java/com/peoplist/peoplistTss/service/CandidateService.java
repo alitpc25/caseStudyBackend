@@ -1,11 +1,10 @@
 package com.peoplist.peoplistTss.service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.peoplist.peoplistTss.dto.CandidateDto;
@@ -30,12 +29,28 @@ public class CandidateService {
 		this.candidateDtoConverter = candidateDtoConverter;
 	}
 
-	public List<CandidateDto> getAllCandidates(int page, int size) {
-		Page<Candidate> candidates = candidateRepository.findAll(PageRequest.of(page, size));
+	public Page<CandidateDto> getAllCandidates(int page, int size) {
+		Page<Candidate> candidates = candidateRepository.findAll(PageRequest.of(page-1, size));
 		if(candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return candidates.getContent().stream().map(candidateDtoConverter::convertToDto).collect(Collectors.toList());
+		return candidates.map(candidateDtoConverter::convertToDto);
+	}
+	
+	public Page<CandidateDto> getAllCandidatesSorted(Integer page, Integer size, String sortedBy, String sortOrder) {
+		Page<Candidate> candidates = candidateRepository.findAll(PageRequest.of(page-1, size, Sort.by(Sort.Direction.fromString(sortOrder) ,sortedBy)));
+		if(candidates.isEmpty()) {
+			throw new CandidateNotFoundException("There exists no candidate.");
+		}
+		return candidates.map(candidateDtoConverter::convertToDto);
+	}
+	
+	public Page<CandidateDto> getAllCandidatesSearchByNameAndOrSurname(Integer page, Integer size, String name, String surname) {
+		Page<Candidate> candidates = candidateRepository.findByNameOrSurnameIgnoreCase(PageRequest.of(page-1, size), name, surname);
+		if(candidates.isEmpty()) {
+			throw new CandidateNotFoundException("There exists no candidate called "+ name + " " + surname);
+		}
+		return candidates.map(candidateDtoConverter::convertToDto);
 	}
 
 	public CandidateDto getCandidateById(String id) {
@@ -49,7 +64,7 @@ public class CandidateService {
 		if(candidateRepository.existsByPhone(createCandidateRequest.getPhone())) {
 			throw new PhoneAlreadyInUseException("Phone already in use.");
 		}
-		CandidateStatusType candidateStatus = CandidateStatusType.valueOf(createCandidateRequest.getCandidateStatus().toUpperCase().replaceAll(" ", "_"));
+		CandidateStatusType candidateStatus = CandidateStatusType.valueOf(createCandidateRequest.getStatus().toUpperCase().replaceAll(" ", "_"));
 		UUID id = UUID.randomUUID();
 		Candidate candidate = new Candidate(id, createCandidateRequest.getName(), createCandidateRequest.getSurname(),
 				createCandidateRequest.getPhone(), createCandidateRequest.getMail(), candidateStatus);
@@ -58,7 +73,7 @@ public class CandidateService {
 	
 	public CandidateDto updateCandidateInfo(String id, String newStatus) {
 		Candidate candidate = findCandidateById(id);
-		candidate.setCandidateStatus(CandidateStatusType.valueOf(newStatus.toUpperCase().replaceAll(" ", "_")));
+		candidate.setStatus(CandidateStatusType.valueOf(newStatus.toUpperCase().replaceAll(" ", "_")));
 		return candidateDtoConverter.convertToDto(candidateRepository.save(candidate));
 	}
 	
@@ -68,14 +83,20 @@ public class CandidateService {
 
 	public CandidateDto updateCandidateInfo(String id, UpdateCandidateRequest updateCandidateRequest) {
 		Candidate candidate = findCandidateById(id);
-		if(!candidate.getPhone().equals(updateCandidateRequest.getPhone())) {
-			candidate.setPhone(updateCandidateRequest.getPhone());
-		}
 		if(!candidate.getMail().equals(updateCandidateRequest.getMail())) {
+			if(candidateRepository.existsByMail(updateCandidateRequest.getMail())) {
+				throw new EmailAlreadyInUseException("Email already in use.");
+			}
 			candidate.setMail(updateCandidateRequest.getMail());
 		}
-		if(!candidate.getCandidateStatus().equals(updateCandidateRequest.getCandidateStatus())) {
-			candidate.setCandidateStatus(CandidateStatusType.valueOf(updateCandidateRequest.getCandidateStatus().toUpperCase().replaceAll(" ", "_")));
+		if(!candidate.getPhone().equals(updateCandidateRequest.getPhone())) {
+			if(candidateRepository.existsByPhone(updateCandidateRequest.getPhone())) {
+				throw new PhoneAlreadyInUseException("Phone already in use.");
+			}
+			candidate.setPhone(updateCandidateRequest.getPhone());
+		}
+		if(!candidate.getStatus().equals(updateCandidateRequest.getStatus())) {
+			candidate.setStatus(CandidateStatusType.valueOf(updateCandidateRequest.getStatus().toUpperCase().replaceAll(" ", "_")));
 		}
 		return candidateDtoConverter.convertToDto(candidateRepository.save(candidate));
 	}
@@ -85,5 +106,5 @@ public class CandidateService {
 		candidateRepository.delete(candidate);
 		return candidate.getName();
 	}
-	
+
 }

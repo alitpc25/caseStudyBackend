@@ -1,7 +1,6 @@
 package com.peoplist.peoplistTss.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +26,20 @@ public class InteractionController {
 		this.interactionService = interactionService;
 	}
 	
-	@GetMapping("/getAll")
-	public ResponseEntity<List<InteractionDto>> getAllInteractionsByCandidateId(@RequestParam String candidateId, @RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "10") int size) {
+	@GetMapping(value="", params={"candidateId", "page", "size"})
+	public ResponseEntity<Page<InteractionDto>> getAllInteractionsByCandidateId(@RequestParam(value="candidateId") String candidateId, 
+			@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size) {
 		return ResponseEntity.ok(interactionService.getAllInteractionsByCandidateId(candidateId, page, size));
+	}
+	
+	@GetMapping(value="", params={"candidateId", "page", "size", "sortedBy", "sortOrder"})
+	public ResponseEntity<Page<InteractionDto>> getAllInteractionsByCandidateIdSorted(@RequestParam String candidateId, 
+			@RequestParam(value = "page", defaultValue = "1") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size,
+			@RequestParam(value = "sortedBy", defaultValue = "name") String sortedBy,
+			@RequestParam(value = "sortOrder", defaultValue = "DESC") String sortOrder) {
+		return ResponseEntity.ok(interactionService.getAllInteractionsByCandidateIdSorted(candidateId, page, size, sortedBy, sortOrder));
 	}
 	
 	@GetMapping("/{id}")

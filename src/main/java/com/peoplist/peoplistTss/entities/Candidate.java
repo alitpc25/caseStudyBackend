@@ -27,28 +27,28 @@ public class Candidate {
 	private Set<Interaction> interactions;
 	
 	@Enumerated
-	private CandidateStatusType candidateStatus;
+	private CandidateStatusType status;
 	
 	public Candidate() {}
 	
 	public Candidate(UUID id, String name, String surname, String phone, String mail, Set<Interaction> interactions,
-			CandidateStatusType candidateStatus) {
+			CandidateStatusType status) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
 		this.mail = mail;
 		this.interactions = interactions;
-		this.candidateStatus = candidateStatus;
+		this.status = status;
 	}
 	
-	public Candidate(UUID id, String name, String surname, String phone, String mail, CandidateStatusType candidateStatus) {
+	public Candidate(UUID id, String name, String surname, String phone, String mail, CandidateStatusType status) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
 		this.mail = mail;
-		this.candidateStatus = candidateStatus;
+		this.status = status;
 	}
 	
 	public Candidate(String name) {
@@ -79,11 +79,11 @@ public class Candidate {
 	public Set<Interaction> getInteractions() {
 		return interactions;
 	}
-	public CandidateStatusType getCandidateStatus() {
-		return candidateStatus;
+	public CandidateStatusType getStatus() {
+		return status;
 	}
-	public void setCandidateStatus(CandidateStatusType candidateStatus) {
-		this.candidateStatus = candidateStatus;
+	public void setStatus(CandidateStatusType status) {
+		this.status = status;
 	}
 
 }
