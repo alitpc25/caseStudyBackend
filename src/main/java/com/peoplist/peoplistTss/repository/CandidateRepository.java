@@ -12,4 +12,6 @@ import com.peoplist.peoplistTss.entities.Candidate;
 public interface CandidateRepository extends JpaRepository<Candidate, UUID> {
 	
 	Page<Candidate> findAll(Pageable pageable);
+	boolean existsByPhone(String phone);
+	boolean existsByMail(String phone);
 }

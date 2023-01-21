@@ -3,6 +3,7 @@ package com.peoplist.peoplistTss.entities;
 import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Candidate {
 	private String phone;
 	private String mail;
 	
-	@OneToMany(mappedBy="candidate")
+	@OneToMany(mappedBy="candidate", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Interaction> interactions;
 	
 	@Enumerated

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.peoplist.peoplistTss.entities.Candidate;
+import com.peoplist.peoplistTss.dto.CandidateDto;
 import com.peoplist.peoplistTss.requests.CreateCandidateRequest;
 import com.peoplist.peoplistTss.requests.UpdateCandidateRequest;
 import com.peoplist.peoplistTss.service.CandidateService;
@@ -29,28 +29,23 @@ public class CandidateController {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<Candidate>> getAllCandidates(@RequestParam(value = "page", defaultValue = "0") int page,
+	public ResponseEntity<List<CandidateDto>> getAllCandidates(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size) {
 		return ResponseEntity.ok(candidateService.getAllCandidates(page, size));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Candidate> getCandidateById(@PathVariable String id) {
+	public ResponseEntity<CandidateDto> getCandidateById(@PathVariable String id) {
 		return ResponseEntity.ok(candidateService.getCandidateById(id));
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<Candidate> saveCandidate(@RequestBody CreateCandidateRequest createCandidateRequest) {
+	public ResponseEntity<CandidateDto> saveCandidate(@RequestBody CreateCandidateRequest createCandidateRequest) {
 		return ResponseEntity.ok(candidateService.saveCandidate(createCandidateRequest));
 	}
 	
-	@PatchMapping("/updateStatus/{id}")
-	public ResponseEntity<Candidate> updateCandidateStatus(@PathVariable String id, @PathVariable String newStatus) {
-		return ResponseEntity.ok(candidateService.updateCandidateStatus(id, newStatus));
-	}
-	
 	@PatchMapping("/updateInfo/{id}")
-	public ResponseEntity<Candidate> updateCandidateInfo(@PathVariable String id, @RequestBody UpdateCandidateRequest updateCandidateRequest) {
+	public ResponseEntity<CandidateDto> updateCandidateInfo(@PathVariable String id, @RequestBody UpdateCandidateRequest updateCandidateRequest) {
 		return ResponseEntity.ok(candidateService.updateCandidateInfo(id, updateCandidateRequest));
 	}
 	

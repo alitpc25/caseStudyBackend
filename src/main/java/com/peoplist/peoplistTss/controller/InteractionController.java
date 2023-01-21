@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.peoplist.peoplistTss.entities.Interaction;
+import com.peoplist.peoplistTss.dto.InteractionDto;
 import com.peoplist.peoplistTss.requests.CreateInteractionRequest;
 import com.peoplist.peoplistTss.requests.UpdateInteractionRequest;
 import com.peoplist.peoplistTss.service.InteractionService;
@@ -27,24 +27,24 @@ public class InteractionController {
 		this.interactionService = interactionService;
 	}
 	
-	@GetMapping("/getLastThree")
-	public ResponseEntity<List<Interaction>> getLastThreeInteractionsOfCandidate(@RequestParam String candidateId) {
-		return ResponseEntity.ok(interactionService.getLastThreeInteractionsOfCandidate(candidateId, 0, 3));
-	}
-	
 	@GetMapping("/getAll")
-	public ResponseEntity<List<Interaction>> getAllInteractionsByCandidateId(@RequestParam String candidateId, @RequestParam(value = "page", defaultValue = "0") int page,
+	public ResponseEntity<List<InteractionDto>> getAllInteractionsByCandidateId(@RequestParam String candidateId, @RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size) {
 		return ResponseEntity.ok(interactionService.getAllInteractionsByCandidateId(candidateId, page, size));
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<InteractionDto> getInteractionById(@PathVariable String id) {
+		return ResponseEntity.ok(interactionService.getInteractionById(id));
+	}
+	
 	@PostMapping("")
-	public ResponseEntity<Interaction> saveInteraction(@RequestParam String candidateId, @RequestBody CreateInteractionRequest createInteractionRequest) {
+	public ResponseEntity<InteractionDto> saveInteraction(@RequestParam String candidateId, @RequestBody CreateInteractionRequest createInteractionRequest) {
 		return ResponseEntity.ok(interactionService.saveInteraction(candidateId, createInteractionRequest));
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<Interaction> updateInteractionInfo(@PathVariable String id, @RequestBody UpdateInteractionRequest updateInteractionRequest) {
+	public ResponseEntity<InteractionDto> updateInteractionInfo(@PathVariable String id, @RequestBody UpdateInteractionRequest updateInteractionRequest) {
 		return ResponseEntity.ok(interactionService.updateInteractionInfo(id, updateInteractionRequest));
 	}
 	

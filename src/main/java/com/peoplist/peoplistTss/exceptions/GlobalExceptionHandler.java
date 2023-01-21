@@ -13,4 +13,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleCandidateNotFoundException(CandidateNotFoundException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+	
+	@ExceptionHandler(value = { EmailAlreadyInUseException.class })
+    protected ResponseEntity<Object> handleEmailAlreadyInUseException(EmailAlreadyInUseException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+	
+	@ExceptionHandler(value = { PhoneAlreadyInUseException.class })
+    protected ResponseEntity<Object> handlePhoneAlreadyInUseException(PhoneAlreadyInUseException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+	
+	@ExceptionHandler(value = { InteractionNotFoundException.class })
+    protected ResponseEntity<Object> handleInteractionNotFoundException(InteractionNotFoundException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

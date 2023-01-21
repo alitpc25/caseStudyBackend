@@ -12,6 +12,5 @@ import com.peoplist.peoplistTss.entities.Interaction;
 
 @Repository
 public interface InteractionRepository extends JpaRepository<Interaction, UUID> {
-	Page<Interaction> findTop3ByDate(LocalDateTime date, Pageable pageable);
 	Page<Interaction> findAllByCandidateId(UUID candidateId, Pageable pageable);
 }
