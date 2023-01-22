@@ -13,7 +13,7 @@ import com.peoplist.peoplistTss.entities.Candidate;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, UUID> {
 	
-	@Query("select u from Candidate u where (lower(u.name) = :name) and (:surname = ''  or lower(u.surname) = :surname)")
+	@Query("select u from Candidate u where (lower(u.name) = lower(:name)) and (:surname = ''  or lower(u.surname) = lower(:surname))")
 	Page<Candidate> findByNameOrSurnameIgnoreCase(Pageable pageable, @Param("name") String name, @Param("surname") String surname);
 	Page<Candidate> findAll(Pageable pageable);
 	boolean existsByPhone(String phone);
