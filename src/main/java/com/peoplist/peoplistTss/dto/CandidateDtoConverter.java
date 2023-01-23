@@ -1,5 +1,8 @@
 package com.peoplist.peoplistTss.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +24,15 @@ public class CandidateDtoConverter {
 	public Candidate convertToEntity(CandidateDto candidateDto) {
 		Candidate candidate = modelMapper.map(candidateDto, Candidate.class);
 	    return candidate;
+	}
+	
+	public List<CandidateDto> convertToDtoList(List<Candidate> candidateList) {
+		List<CandidateDto> candidateDtoList = candidateList.stream().map(c -> modelMapper.map(c, CandidateDto.class)).collect(Collectors.toList());
+	    return candidateDtoList;
+	}
+	
+	public List<Candidate> convertToEntity(List<CandidateDto> candidateDtoList) {
+		List<Candidate> candidateList = candidateDtoList.stream().map(c -> modelMapper.map(c, Candidate.class)).collect(Collectors.toList());
+	    return candidateList;
 	}
 }

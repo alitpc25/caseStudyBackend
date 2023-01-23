@@ -3,6 +3,7 @@ package com.peoplist.peoplistTss.service;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -31,26 +32,30 @@ public class CandidateService {
 
 	public Page<CandidateDto> getAllCandidates(int page, int size) {
 		Page<Candidate> candidates = candidateRepository.findAll(PageRequest.of(page-1, size));
-		if(candidates.isEmpty()) {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSorted(Integer page, Integer size, String sortedBy, String sortOrder) {
 		Page<Candidate> candidates = candidateRepository.findAll(PageRequest.of(page-1, size, Sort.by(Sort.Direction.fromString(sortOrder) ,sortedBy)));
-		if(candidates.isEmpty()) {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSearchByNameAndOrSurname(Integer page, Integer size, String name, String surname) {
 		Page<Candidate> candidates = candidateRepository.findByNameOrSurnameIgnoreCase(PageRequest.of(page-1, size), name, surname);
-		if(candidates.isEmpty()) {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate called "+ name + " " + surname);
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
+	}
+	
+	protected Candidate findCandidateById(String id) {
+		return candidateRepository.findById(UUID.fromString(id)).orElseThrow(() -> new CandidateNotFoundException("User not found."));
 	}
 
 	public CandidateDto getCandidateById(String id) {
@@ -69,16 +74,6 @@ public class CandidateService {
 		Candidate candidate = new Candidate(id, createCandidateRequest.getName(), createCandidateRequest.getSurname(),
 				createCandidateRequest.getPhone(), createCandidateRequest.getMail(), candidateStatus);
 		return candidateDtoConverter.convertToDto(candidateRepository.save(candidate));
-	}
-	
-	public CandidateDto updateCandidateInfo(String id, String newStatus) {
-		Candidate candidate = findCandidateById(id);
-		candidate.setStatus(CandidateStatusType.valueOf(newStatus.toUpperCase().replaceAll(" ", "_")));
-		return candidateDtoConverter.convertToDto(candidateRepository.save(candidate));
-	}
-	
-	protected Candidate findCandidateById(String id) {
-		return candidateRepository.findById(UUID.fromString(id)).orElseThrow(() -> new CandidateNotFoundException("User not found."));
 	}
 
 	public CandidateDto updateCandidateInfo(String id, UpdateCandidateRequest updateCandidateRequest) {
