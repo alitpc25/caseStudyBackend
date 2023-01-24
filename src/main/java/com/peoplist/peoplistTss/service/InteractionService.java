@@ -36,7 +36,7 @@ public class InteractionService {
 		if(interactions.isEmpty()) {
 			throw new InteractionNotFoundException("There exists no interactions with candidate " + candidateName + ".");
 		}
-		return interactions.map(interactionDtoConverter::convertToDto);
+		return interactionDtoConverter.convertToDtoList(interactions);
 	}
 	
 	public Page<InteractionDto> getAllInteractionsByCandidateIdSorted(String candidateId, Integer page, Integer size, String sortedBy,
@@ -47,7 +47,7 @@ public class InteractionService {
 		if(interactions.isEmpty()) {
 			throw new InteractionNotFoundException("There exists no interactions with candidate " + candidateName + ".");
 		}
-		return interactions.map(interactionDtoConverter::convertToDto);
+		return interactionDtoConverter.convertToDtoList(interactions);
 	}
 	
 	private String extractCandidateName(String candidateId) {
@@ -56,9 +56,8 @@ public class InteractionService {
 
 	public InteractionDto saveInteraction(String candidateId, CreateInteractionRequest createInteractionRequest) {
 		InteractionType interactionType = InteractionType.valueOf(createInteractionRequest.getInteractionType().toUpperCase().replaceAll(" ", "_"));
-		UUID id = UUID.randomUUID();
 		Candidate candidate = candidateService.findCandidateById(candidateId);
-		Interaction interaction = new Interaction(id, candidate, interactionType, createInteractionRequest.getContent(),
+		Interaction interaction = new Interaction(candidate, interactionType, createInteractionRequest.getContent(),
 				createInteractionRequest.getDate(), createInteractionRequest.isCandidateResponded());
 		return interactionDtoConverter.convertToDto(interactionRepository.save(interaction));
 	}

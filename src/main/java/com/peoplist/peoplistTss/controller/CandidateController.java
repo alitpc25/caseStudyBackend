@@ -1,6 +1,7 @@
 package com.peoplist.peoplistTss.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +58,7 @@ public class CandidateController {
 	
 	@PostMapping("")
 	public ResponseEntity<CandidateDto> saveCandidate(@RequestBody CreateCandidateRequest createCandidateRequest) {
-		return ResponseEntity.ok(candidateService.saveCandidate(createCandidateRequest));
+		return new ResponseEntity<CandidateDto>(candidateService.saveCandidate(createCandidateRequest), HttpStatus.CREATED);
 	}
 	
 	@PatchMapping("/updateInfo/{id}")

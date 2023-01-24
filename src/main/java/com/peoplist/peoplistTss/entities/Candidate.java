@@ -32,19 +32,16 @@ public class Candidate {
 	
 	public Candidate() {}
 	
-	public Candidate(UUID id, String name, String surname, String phone, String mail, Set<Interaction> interactions,
-			CandidateStatusType status) {
+	public Candidate(UUID id, String name, String surname, String phone, String mail, CandidateStatusType status) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
 		this.mail = mail;
-		this.interactions = interactions;
 		this.status = status;
 	}
 	
-	public Candidate(UUID id, String name, String surname, String phone, String mail, CandidateStatusType status) {
-		this.id = id;
+	public Candidate(String name, String surname, String phone, String mail, CandidateStatusType status) {
 		this.name = name;
 		this.surname = surname;
 		this.phone = phone;
@@ -105,6 +102,12 @@ public class Candidate {
 				&& Objects.equals(mail, other.mail) && Objects.equals(name, other.name)
 				&& Objects.equals(phone, other.phone) && status == other.status
 				&& Objects.equals(surname, other.surname);
+	}
+
+	@Override
+	public String toString() {
+		return "Candidate [id=" + id + ", name=" + name + ", surname=" + surname + ", phone=" + phone + ", mail=" + mail
+				+ ", interactions=" + interactions + ", status=" + status + "]";
 	}
 
 }

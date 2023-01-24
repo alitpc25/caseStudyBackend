@@ -1,6 +1,7 @@
 package com.peoplist.peoplistTss.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class InteractionController {
 	
 	@PostMapping("")
 	public ResponseEntity<InteractionDto> saveInteraction(@RequestParam String candidateId, @RequestBody CreateInteractionRequest createInteractionRequest) {
-		return ResponseEntity.ok(interactionService.saveInteraction(candidateId, createInteractionRequest));
+		return new ResponseEntity<InteractionDto>(interactionService.saveInteraction(candidateId, createInteractionRequest), HttpStatus.CREATED); 
 	}
 	
 	@PatchMapping("/{id}")

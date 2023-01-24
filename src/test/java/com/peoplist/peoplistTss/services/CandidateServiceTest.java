@@ -45,9 +45,9 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		UUID id2 = UUID.randomUUID();
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
-		Candidate candidate2 = new Candidate(id2, "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
+		Candidate candidate2 = new Candidate("test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
 		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1, candidate2));
@@ -98,9 +98,9 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		UUID id2 = UUID.randomUUID();
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate( "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
-		Candidate candidate2 = new Candidate(id2, "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
+		Candidate candidate2 = new Candidate( "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
 		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1, candidate2));
@@ -150,7 +150,7 @@ public class CandidateServiceTest {
 	void testGetAllCandidatesSearchByNameAndOrSurname_whenValidRequest_thenShouldReturnPageOfCandidateDto() {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate( "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1));
@@ -200,7 +200,7 @@ public class CandidateServiceTest {
 	void testGetCandidateById_whenValidRequest_thenShouldReturnCandidateDto() {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate( "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
@@ -235,7 +235,7 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		CreateCandidateRequest request = new CreateCandidateRequest("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", "Hired");
-		Candidate toSave = new Candidate(id1, request.getName(), request.getSurname(), request.getPhone(), request.getMail(), CandidateStatusType.valueOf(request.getStatus().toUpperCase().replaceAll(" ", "_")));
+		Candidate toSave = new Candidate(request.getName(), request.getSurname(), request.getPhone(), request.getMail(), CandidateStatusType.valueOf(request.getStatus().toUpperCase().replaceAll(" ", "_")));
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
@@ -291,8 +291,8 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		UpdateCandidateRequest request = new UpdateCandidateRequest("test-phone-updated-1", "test-mail1-updated@email.com", "Hired");
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		Candidate updatedCandidate = new Candidate(id1, "test-name1", "test-surname1", "test-phone-updated-1", "test-mail1-updated@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate updatedCandidate = new Candidate("test-name1", "test-surname1", "test-phone-updated-1", "test-mail1-updated@email.com", CandidateStatusType.HIRED);
 		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone-updated-1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
@@ -318,7 +318,7 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		UpdateCandidateRequest request = new UpdateCandidateRequest("test-phone-updated-1", "test-mail1-updated@email.com", "Hired");
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		
 		//Test case
 		Mockito.when(candidateRepository.findById(id1)).thenReturn(Optional.of(candidate1));
@@ -337,7 +337,7 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		UpdateCandidateRequest request = new UpdateCandidateRequest("test-phone-updated-1", "test-mail1-updated@email.com", "Hired");
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		
 		//Test case
 		Mockito.when(candidateRepository.findById(id1)).thenReturn(Optional.of(candidate1));
@@ -357,7 +357,7 @@ public class CandidateServiceTest {
 	void testDeleteCandidateInfo_whenValidRequest_thenShouldReturnString() {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
+		Candidate candidate1 = new Candidate("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		String name = candidate1.getName();
 		
 		//Test case

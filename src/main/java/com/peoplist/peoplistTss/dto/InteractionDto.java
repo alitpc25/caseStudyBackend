@@ -77,6 +77,12 @@ public class InteractionDto {
 				&& Objects.equals(content, other.content) && Objects.equals(date, other.date)
 				&& Objects.equals(id, other.id) && Objects.equals(interactionType, other.interactionType);
 	}
+
+	@Override
+	public String toString() {
+		return "InteractionDto [id=" + id + ", interactionType=" + interactionType + ", content=" + content + ", date="
+				+ date + ", candidateResponded=" + candidateResponded + ", candidateId=" + candidateId + "]";
+	}
 	
 	
 }

@@ -35,9 +35,8 @@ public class Interaction {
 	
 	public Interaction() {}
 	
-	public Interaction(UUID id, Candidate candidate, InteractionType interactionType, String content, LocalDateTime date,
+	public Interaction(Candidate candidate, InteractionType interactionType, String content, LocalDateTime date,
 			boolean candidateResponded) {
-		this.id = id;
 		this.candidate = candidate;
 		this.interactionType = interactionType;
 		this.content = content;
@@ -45,8 +44,9 @@ public class Interaction {
 		this.candidateResponded = candidateResponded;
 	}
 	
-	public Interaction(Candidate candidate, InteractionType interactionType, String content, LocalDateTime date,
+	public Interaction(UUID id, Candidate candidate, InteractionType interactionType, String content, LocalDateTime date,
 			boolean candidateResponded) {
+		this.id = id;
 		this.candidate = candidate;
 		this.interactionType = interactionType;
 		this.content = content;
@@ -115,6 +115,12 @@ public class Interaction {
 		return Objects.equals(candidate, other.candidate) && candidateResponded == other.candidateResponded
 				&& Objects.equals(content, other.content) && Objects.equals(date, other.date)
 				&& Objects.equals(id, other.id) && interactionType == other.interactionType;
+	}
+
+	@Override
+	public String toString() {
+		return "Interaction [id=" + id + ", interactionType=" + interactionType + ", content=" + content + ", date="
+				+ date + ", candidateResponded=" + candidateResponded + ", candidate=" + candidate + "]";
 	}
 	
 }

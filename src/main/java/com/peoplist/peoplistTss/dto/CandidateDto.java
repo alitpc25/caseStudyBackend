@@ -75,5 +75,11 @@ public class CandidateDto {
 				&& Objects.equals(phone, other.phone) && Objects.equals(status, other.status)
 				&& Objects.equals(surname, other.surname);
 	}
+
+	@Override
+	public String toString() {
+		return "CandidateDto [id=" + id + ", name=" + name + ", surname=" + surname + ", phone=" + phone + ", mail="
+				+ mail + ", status=" + status + "]";
+	}
 	
 }

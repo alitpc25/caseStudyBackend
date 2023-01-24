@@ -148,7 +148,7 @@ public class InteractionServiceTest {
 		Candidate candidate1 = new Candidate(candidateId, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		LocalDateTime date = LocalDateTime.now();
 		CreateInteractionRequest request = new CreateInteractionRequest("mail", "test-content", date, true);
-		Interaction interaction1 = new Interaction(interactionId, candidate1, InteractionType.valueOf(request.getInteractionType().toUpperCase().replaceAll(" ", "_")), request.getContent(), request.getDate(), request.isCandidateResponded());
+		Interaction interaction1 = new Interaction(candidate1, InteractionType.valueOf(request.getInteractionType().toUpperCase().replaceAll(" ", "_")), request.getContent(), request.getDate(), request.isCandidateResponded());
 		
 		InteractionDto interactionDto1 = new InteractionDto(interactionId.toString(), InteractionType.MAIL.getType(), "test-content", date, true, candidate1.getId().toString());
 		

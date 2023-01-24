@@ -1,6 +1,5 @@
 package com.peoplist.peoplistTss.repository;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;

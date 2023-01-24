@@ -34,7 +34,7 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return candidateDtoConverter.convertToDtoList(candidates);
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSorted(Integer page, Integer size, String sortedBy, String sortOrder) {
@@ -42,7 +42,7 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return candidateDtoConverter.convertToDtoList(candidates);
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSearchByNameAndOrSurname(Integer page, Integer size, String name, String surname) {
@@ -50,7 +50,7 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate called "+ name + " " + surname);
 		}
-		return candidates.map(candidateDtoConverter::convertToDto);
+		return candidateDtoConverter.convertToDtoList(candidates);
 	}
 	
 	public Candidate findCandidateById(String id) {
@@ -69,8 +69,7 @@ public class CandidateService {
 			throw new PhoneAlreadyInUseException("Phone already in use.");
 		}
 		CandidateStatusType candidateStatus = CandidateStatusType.valueOf(createCandidateRequest.getStatus().toUpperCase().replaceAll(" ", "_"));
-		UUID id = UUID.randomUUID();
-		Candidate candidate = new Candidate(id, createCandidateRequest.getName(), createCandidateRequest.getSurname(),
+		Candidate candidate = new Candidate(createCandidateRequest.getName(), createCandidateRequest.getSurname(),
 				createCandidateRequest.getPhone(), createCandidateRequest.getMail(), candidateStatus);
 		return candidateDtoConverter.convertToDto(candidateRepository.save(candidate));
 	}
