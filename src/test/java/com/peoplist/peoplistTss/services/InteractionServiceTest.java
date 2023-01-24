@@ -213,7 +213,7 @@ public class InteractionServiceTest {
 		
 		//Verify
 		InteractionDto result = interactionService.updateInteractionInfo(interaction1.getId().toString(),request);
-		assertEquals(result, updatedInteraction1);
+		assertEquals(result, updatedInteractionDto1);
 		
 		Mockito.verify(interactionRepository).findById(interactionId);
 		Mockito.verify(interactionRepository).save(updatedInteraction1);
