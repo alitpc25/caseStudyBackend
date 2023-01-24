@@ -1,6 +1,7 @@
 package com.peoplist.peoplistTss.entities;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -95,6 +96,25 @@ public class Interaction {
 
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(candidate, candidateResponded, content, date, id, interactionType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Interaction other = (Interaction) obj;
+		return Objects.equals(candidate, other.candidate) && candidateResponded == other.candidateResponded
+				&& Objects.equals(content, other.content) && Objects.equals(date, other.date)
+				&& Objects.equals(id, other.id) && interactionType == other.interactionType;
 	}
 	
 }

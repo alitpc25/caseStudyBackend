@@ -1,5 +1,6 @@
 package com.peoplist.peoplistTss.entities;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -84,6 +85,26 @@ public class Candidate {
 	}
 	public void setStatus(CandidateStatusType status) {
 		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, interactions, mail, name, phone, status, surname);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Candidate other = (Candidate) obj;
+		return Objects.equals(id, other.id) && Objects.equals(interactions, other.interactions)
+				&& Objects.equals(mail, other.mail) && Objects.equals(name, other.name)
+				&& Objects.equals(phone, other.phone) && status == other.status
+				&& Objects.equals(surname, other.surname);
 	}
 
 }

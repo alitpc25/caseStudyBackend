@@ -3,7 +3,6 @@ package com.peoplist.peoplistTss.service;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
+		return candidates.map(candidateDtoConverter::convertToDto);
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSorted(Integer page, Integer size, String sortedBy, String sortOrder) {
@@ -43,7 +42,7 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate.");
 		}
-		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
+		return candidates.map(candidateDtoConverter::convertToDto);
 	}
 	
 	public Page<CandidateDto> getAllCandidatesSearchByNameAndOrSurname(Integer page, Integer size, String name, String surname) {
@@ -51,10 +50,10 @@ public class CandidateService {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new CandidateNotFoundException("There exists no candidate called "+ name + " " + surname);
 		}
-		return new PageImpl<CandidateDto>(candidateDtoConverter.convertToDtoList(candidates.toList()));
+		return candidates.map(candidateDtoConverter::convertToDto);
 	}
 	
-	protected Candidate findCandidateById(String id) {
+	public Candidate findCandidateById(String id) {
 		return candidateRepository.findById(UUID.fromString(id)).orElseThrow(() -> new CandidateNotFoundException("User not found."));
 	}
 

@@ -12,7 +12,6 @@ import com.peoplist.peoplistTss.dto.InteractionDtoConverter;
 import com.peoplist.peoplistTss.entities.Candidate;
 import com.peoplist.peoplistTss.entities.Interaction;
 import com.peoplist.peoplistTss.entities.InteractionType;
-import com.peoplist.peoplistTss.exceptions.CandidateNotFoundException;
 import com.peoplist.peoplistTss.exceptions.InteractionNotFoundException;
 import com.peoplist.peoplistTss.repository.InteractionRepository;
 import com.peoplist.peoplistTss.requests.CreateInteractionRequest;
@@ -35,7 +34,7 @@ public class InteractionService {
 		Page<Interaction> interactions = interactionRepository.findAllByCandidateId(UUID.fromString(candidateId), PageRequest.of(page-1, size));
 		String candidateName = extractCandidateName(candidateId);
 		if(interactions.isEmpty()) {
-			throw new CandidateNotFoundException("There exists no interactions with candidate " + candidateName + ".");
+			throw new InteractionNotFoundException("There exists no interactions with candidate " + candidateName + ".");
 		}
 		return interactions.map(interactionDtoConverter::convertToDto);
 	}
@@ -46,7 +45,7 @@ public class InteractionService {
 				PageRequest.of(page-1, size, Sort.by(Sort.Direction.fromString(sortOrder) ,sortedBy)));
 		String candidateName = extractCandidateName(candidateId);
 		if(interactions.isEmpty()) {
-			throw new CandidateNotFoundException("There exists no interactions with candidate " + candidateName + ".");
+			throw new InteractionNotFoundException("There exists no interactions with candidate " + candidateName + ".");
 		}
 		return interactions.map(interactionDtoConverter::convertToDto);
 	}
@@ -66,7 +65,6 @@ public class InteractionService {
 
 	public InteractionDto updateInteractionInfo(String id, UpdateInteractionRequest updateInteractionRequest) {
 		Interaction interaction = findInteractionById(id);
-		//Claimi extract ettigin methodu yaz bunun için ;)
 		if(!interaction.getInteractionType().equals(updateInteractionRequest.getInteractionType())) {
 			interaction.setInteractionType(InteractionType.valueOf(updateInteractionRequest.getInteractionType().toUpperCase().replaceAll(" ", "_")));
 		}

@@ -46,23 +46,23 @@ public class CandidateServiceTest {
 		UUID id1 = UUID.randomUUID();
 		UUID id2 = UUID.randomUUID();
 		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		Candidate candidate2 = new Candidate(id2, "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
-		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.toString());
+		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1, candidate2));
 		Page<CandidateDto> candidatesDto = new PageImpl<CandidateDto>(List.of(candidateDto1, candidateDto2));
 		
 		//Test case
 		Mockito.when(candidateRepository.findAll(PageRequest.of(0, 2))).thenReturn(candidates);
-		Mockito.when(candidateDtoConverter.convertToDtoList(candidates.getContent())).thenReturn(candidatesDto.getContent());
+		Mockito.when(candidateDtoConverter.convertToDtoList(candidates)).thenReturn(candidatesDto);
 		
 		//Verify
 		Page<CandidateDto> result = candidateService.getAllCandidates(1, 2);
 		assertEquals(result.getContent(), candidatesDto.getContent());
 		
 		Mockito.verify(candidateRepository).findAll(PageRequest.of(0, 2));
-		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates.getContent());
+		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates);
 	}
 	
 	@Test
@@ -99,23 +99,23 @@ public class CandidateServiceTest {
 		UUID id1 = UUID.randomUUID();
 		UUID id2 = UUID.randomUUID();
 		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		Candidate candidate2 = new Candidate(id2, "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
-		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.toString());
+		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1, candidate2));
 		Page<CandidateDto> candidatesDto = new PageImpl<CandidateDto>(List.of(candidateDto1, candidateDto2));
 		
 		//Test case
 		Mockito.when(candidateRepository.findAll(PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "name")))).thenReturn(candidates);
-		Mockito.when(candidateDtoConverter.convertToDtoList(candidates.getContent())).thenReturn(candidatesDto.getContent());
+		Mockito.when(candidateDtoConverter.convertToDtoList(candidates)).thenReturn(candidatesDto);
 		
 		//Verify
 		Page<CandidateDto> result = candidateService.getAllCandidatesSorted(1, 2, "name", "ASC");
 		assertEquals(result.getContent(), candidatesDto.getContent());
 		
 		Mockito.verify(candidateRepository).findAll(PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "name")));
-		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates.getContent());
+		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates);
 	}
 	
 	@Test
@@ -150,25 +150,22 @@ public class CandidateServiceTest {
 	void testGetAllCandidatesSearchByNameAndOrSurname_whenValidRequest_thenShouldReturnPageOfCandidateDto() {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
-		UUID id2 = UUID.randomUUID();
 		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
-		Candidate candidate2 = new Candidate(id2, "test-name2", "test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED);
-		CandidateDto candidateDto2 = new CandidateDto(id2.toString(), "test-name2","test-surname2", "test-phone2", "test-mail2@email.com", CandidateStatusType.SOURCED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		Page<Candidate> candidates = new PageImpl<Candidate>(List.of(candidate1));
 		Page<CandidateDto> candidatesDto = new PageImpl<CandidateDto>(List.of(candidateDto1));
 		
 		//Test case
 		Mockito.when(candidateRepository.findByNameOrSurnameIgnoreCase(PageRequest.of(0, 2), "test-name1", "test-surname1")).thenReturn(candidates);
-		Mockito.when(candidateDtoConverter.convertToDtoList(candidates.getContent())).thenReturn(candidatesDto.getContent());
+		Mockito.when(candidateDtoConverter.convertToDtoList(candidates)).thenReturn(candidatesDto);
 		
 		//Verify
 		Page<CandidateDto> result = candidateService.getAllCandidatesSearchByNameAndOrSurname(1, 2, "test-name1", "test-surname1");
 		assertEquals(result.getContent(), candidatesDto.getContent());
 		
 		Mockito.verify(candidateRepository).findByNameOrSurnameIgnoreCase(PageRequest.of(0, 2), "test-name1", "test-surname1");
-		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates.getContent());
+		Mockito.verify(candidateDtoConverter).convertToDtoList(candidates);
 	}
 	
 	@Test
@@ -204,7 +201,7 @@ public class CandidateServiceTest {
 		//Data for testing
 		UUID id1 = UUID.randomUUID();
 		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
 		Mockito.when(candidateRepository.findById(id1)).thenReturn(Optional.of(candidate1));
@@ -239,14 +236,13 @@ public class CandidateServiceTest {
 		UUID id1 = UUID.randomUUID();
 		CreateCandidateRequest request = new CreateCandidateRequest("test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", "Hired");
 		Candidate toSave = new Candidate(id1, request.getName(), request.getSurname(), request.getPhone(), request.getMail(), CandidateStatusType.valueOf(request.getStatus().toUpperCase().replaceAll(" ", "_")));
-		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
 		Mockito.when(candidateRepository.existsByMail(request.getMail())).thenReturn(false);
 		Mockito.when(candidateRepository.existsByPhone(request.getPhone())).thenReturn(false);
-		Mockito.when(candidateRepository.save(toSave)).thenReturn(candidate1);
-		Mockito.when(candidateDtoConverter.convertToDto(candidate1)).thenReturn(candidateDto1);
+		Mockito.when(candidateRepository.save(toSave)).thenReturn(toSave);
+		Mockito.when(candidateDtoConverter.convertToDto(toSave)).thenReturn(candidateDto1);
 		
 		//Verify
 		CandidateDto result = candidateService.saveCandidate(request);
@@ -255,7 +251,7 @@ public class CandidateServiceTest {
 		Mockito.verify(candidateRepository).existsByMail(request.getMail());
 		Mockito.verify(candidateRepository).existsByPhone(request.getPhone());
 		Mockito.verify(candidateRepository).save(toSave);
-		Mockito.verify(candidateDtoConverter).convertToDto(candidate1);
+		Mockito.verify(candidateDtoConverter).convertToDto(toSave);
 	}
 	
 	@Test
@@ -297,7 +293,7 @@ public class CandidateServiceTest {
 		UpdateCandidateRequest request = new UpdateCandidateRequest("test-phone-updated-1", "test-mail1-updated@email.com", "Hired");
 		Candidate candidate1 = new Candidate(id1, "test-name1", "test-surname1", "test-phone1", "test-mail1@email.com", CandidateStatusType.HIRED);
 		Candidate updatedCandidate = new Candidate(id1, "test-name1", "test-surname1", "test-phone-updated-1", "test-mail1-updated@email.com", CandidateStatusType.HIRED);
-		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone-updated-1", "test-mail1@email.com", CandidateStatusType.HIRED.toString());
+		CandidateDto candidateDto1 = new CandidateDto(id1.toString(), "test-name1","test-surname1", "test-phone-updated-1", "test-mail1@email.com", CandidateStatusType.HIRED.getStatus());
 		
 		//Test case
 		Mockito.when(candidateRepository.findById(id1)).thenReturn(Optional.of(candidate1));

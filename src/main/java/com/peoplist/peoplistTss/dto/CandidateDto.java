@@ -1,5 +1,7 @@
 package com.peoplist.peoplistTss.dto;
 
+import java.util.Objects;
+
 public class CandidateDto {
 	private String id;
 	private String name;
@@ -53,6 +55,25 @@ public class CandidateDto {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, mail, name, phone, status, surname);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CandidateDto other = (CandidateDto) obj;
+		return Objects.equals(id, other.id) && Objects.equals(mail, other.mail) && Objects.equals(name, other.name)
+				&& Objects.equals(phone, other.phone) && Objects.equals(status, other.status)
+				&& Objects.equals(surname, other.surname);
 	}
 	
 }

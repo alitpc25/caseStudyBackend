@@ -1,6 +1,7 @@
 package com.peoplist.peoplistTss.dto;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class InteractionDto {
 	private String id;
@@ -56,6 +57,25 @@ public class InteractionDto {
 	}
 	public void setCandidateId(String candidateId) {
 		this.candidateId = candidateId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(candidateId, candidateResponded, content, date, id, interactionType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InteractionDto other = (InteractionDto) obj;
+		return Objects.equals(candidateId, other.candidateId) && candidateResponded == other.candidateResponded
+				&& Objects.equals(content, other.content) && Objects.equals(date, other.date)
+				&& Objects.equals(id, other.id) && Objects.equals(interactionType, other.interactionType);
 	}
 	
 	
